@@ -9,7 +9,7 @@ async function loadMovies(search) {
   const res = await fetch(`${URL}`);
   const data = await res.json();
   // console.log(data.Search);
-  if (data.Response == "True") displayMovie(data.Search);
+  if (data.Response == "True") displayMovie(data.Search); observe();
 }
 
 function findMovies() {
@@ -51,6 +51,31 @@ function displayMovie(movies) {
   }
 }
 
-// affichage détails
+// intersection observer
 
-
+let observer = new IntersectionObserver(
+    function (observable) {
+      observable.forEach(function (observable) {
+        if (observable.intersectionRatio > 0.5) {
+          observable.target.classList.remove("not-visible");
+          console.log("visible");
+          // observer.unobserve(observable.target)
+        } else {
+          observable.target.classList.add("not-visible");
+          console.log("pas visible");
+        }
+      });
+    },
+    {
+      threshold: [0.5],
+    }
+  );
+  
+function observe(){
+    let result = document.querySelectorAll(".card");
+    console.log(result);
+    result.forEach(function (result) {
+      result.classList.add("not-visible");
+      observer.observe(result);
+    });
+  };
